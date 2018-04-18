@@ -1,0 +1,5 @@
+---
+  search: exclude
+---
+User-agent: *
+SITEMAP: https://yaosha.github.io/sitemap.xml

@@ -1,0 +1,6 @@
+{% for item in site.tocs %} 
+  {% assign toc_name = item|upcase %}
+  {% assign nav_name = include.toc.bigheader|upcase %}
+  {% assign toc1 = site.data[item] %}
+  <a href="/docs/{{item|downcase}}" {% if toc_name==nav_name %}class="page-link nc" {% else %}class="page-link" {% endif %}>{{toc1.abstract}}</a>
+{% endfor %}

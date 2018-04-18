@@ -1,0 +1,36 @@
+{
+  "name": "note",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "dependencies": {
+    "chai": "^4.0.1"
+  },
+  "devDependencies": {
+    "grunt": "^1.0.1",
+    "grunt-contrib-csslint": "^2.0.0",
+    "grunt-contrib-jshint": "^1.1.0",
+    "grunt-html": "^8.4.0",
+    "grunt-htmllint": "^0.2.7",
+    "grunt-sass-lint": "^0.2.2",
+    "grunt-scss-lint": "^0.5.0",
+    "htmllint": "^0.6.0",
+    "jshint-stylish": "^2.2.1"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yaosha/yaosha.github.io.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/yaosha/yaosha.github.io/issues"
+  },
+  "homepage": "https://github.com/yaosha/yaosha.github.io#readme"
+}

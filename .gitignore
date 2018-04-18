@@ -1,0 +1,13 @@
+.sass-cache/
+_site
+node_modules
+npm-debug.log
+# tmp
+
+# swap
+[._]*.s[a-v][a-z]
+[._]*.sw[a-p]
+[._]s[a-v][a-z]
+[._]sw[a-p]
+
+Gemfile.lock

@@ -1,0 +1,60 @@
+bigheader: "guides"
+abstract: "Jekyll"
+toc: 
+- path: docs/guides/index.md
+
+- title: Jekyll
+  section: 
+  - path: docs/guides/jekyll/windows_setup.md
+  - path: docs/guides/jekyll/install-jekyll-in-linux.md
+  - path: docs/guides/jekyll/page-layout-configuration.md
+  - path: docs/guides/jekyll/create-new-page.md
+
+- title: Markdown
+  section: 
+  - path: docs/guides/markdown/add-links-into-picture.md
+  - path: docs/guides/markdown/show-tables.md
+  - path: docs/guides/markdown/show-pictures.md
+  - path: docs/guides/markdown/hyperlink.md
+  - path: docs/guides/markdown/show-media.md
+  - path: docs/guides/markdown/show-pages.md
+  - path: docs/guides/markdown/choose.md
+  - path: docs/guides/markdown/icons.md
+  - path: docs/guides/markdown/tooltips.md
+  - path: docs/guides/markdown/workflow.md
+  
+- title: Simple Workflow
+  workflow: true
+  section: 
+  - flow_title: Step 1
+    path: docs/guides/workflow/simple/sample1.md
+  - flow_title: Step 2
+    path: docs/guides/workflow/simple/sample2.md
+  - flow_title: Step 3
+    path: docs/guides/workflow/simple/sample3.md
+  - flow_title: Step 4
+    path: docs/guides/workflow/simple/sample4.md
+  - flow_title: Step 5
+    path: docs/guides/workflow/simple/sample5.md
+
+- title: Complex Workflow
+  workflow: true
+  section: 
+  - title: Step 1
+    section:
+    - path: docs/guides/workflow/complex/sample6.md
+    - path: docs/guides/workflow/complex/sample7.md
+    - path: docs/guides/workflow/complex/sample8.md
+  - title: Step 2
+    section:
+    - path: docs/guides/workflow/complex/sample9.md
+    - path: docs/guides/workflow/complex/sample10.md
+    - path: docs/guides/workflow/complex/sample11.md
+  - title: Step 3
+    section:
+    - path: docs/guides/workflow/complex/sample12.md
+    - path: docs/guides/workflow/complex/sample13.md
+    - path: docs/guides/workflow/complex/sample14.md
+  
+- title: Markdown语法解读
+  path: https://github.com/guodongxiaren/README

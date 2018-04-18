@@ -1,0 +1,38 @@
+<div id="search-results-header" >
+    <input type="text" name="queryString" id="query-string" value="" incremental="true" maxlength="255" />
+    <button type="button" id="search-content-button">Search</button>
+</div>
+<section>
+    <div>
+        <ul id="results-content-container"></ul>
+    </div>
+</section>
+<script type="text/javascript">
+function getQueryString(name) {
+    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+    var r = window.location.search.substr(1).match(reg);
+    if (r != null) return decodeURI(r[2]);
+    return null;
+}
+(function() {
+    var queryString = getQueryString('queryString');
+    if (queryString) {
+        document.getElementById('query-string').value = queryString;
+
+        function triggerSearch() {
+            document.getElementById("search-content-button").click();
+        };
+
+        ContentJekyllSearch.init({
+            searchInput: document.getElementById('query-string'),
+            searchButton: document.getElementById('search-content-button'),
+            resultsContainer: document.getElementById('results-content-container'),
+            dataSource: '/search.json',
+            searchResultTemplate: '<li><a href="{url}" title="Search configuration">{title}</a><div>{content}</div></li>',
+            noResultsText: 'No results found.',
+            fuzzy: true,
+            afterInit: triggerSearch
+        });
+    }
+})();
+</script>

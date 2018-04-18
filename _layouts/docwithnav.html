@@ -1,0 +1,104 @@
+{% for current_toc in site.tocs %} {% if found_toc %} {% break %} {% else %} {% assign toc=site.data[current_toc] %} {% include tocsearch.html tree=toc.toc toc=toc %} {% endif %} {% endfor %}
+<!DOCTYPE html>
+<html id="docs" lang="{{ page.lang | default: site.lang | default: " en " }}">
+{% include head.html %}
+
+<body data-spy="scroll" data-target="#navbar-example">
+    {% include header.html %}
+    <section class="site-sub-section">
+        <div class="wrapper">
+            <h2 style="display:none">{{toc.abstract}}</h2>
+            <nav class="site-sub-nav" style="float:left">
+                <div class="trigger highlight">
+                    
+                {% include doc-nav.html toc=toc %}
+                </div>
+            </nav>
+        </div>
+    </section>
+    <section id="encyclopedia" class="wrapper">
+        <div id="docsToc">
+            <div class="pi-accordion">
+                {% include_cached tree.html tree=toc.toc %}
+            </div>
+            <button class="push-menu-close-button" onclick="kub.toggleToc()"></button>
+        </div>
+        <div id="docsContent">
+            <div class="history"></div>
+            <p><a href="{{ site.github_url }}{{ page.path }}" id="editPageButton">Edit This Page</a></p>
+            {% unless page.notitle %}
+            <h1>{{ page.title }}</h1> 
+            {% endunless %} 
+            {% include workflow.html tree=toc.toc %}
+            {{ content }}
+        </div>
+    </section>
+    {% include footer.html %}
+    <button class="flyout-button" onclick="kub.toggleToc()"></button>
+    <script>
+    // hide docs nav area if no nav is present, or if nav only contains a link to the current page
+    (function() {
+        window.addEventListener('DOMContentLoaded', init);
+
+        // play nice with our neighbors
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init);
+            hideNav();
+        }
+
+        function hideNav(toc) {
+            if (!toc) {
+                toc = document.querySelector('#docsToc');
+            }
+
+            var rightToc = document.querySelector('#markdown-toc');
+            var container = toc.querySelector('.pi-container');
+
+            if (rightToc) { //right toc is exist
+                // container is built dynamically, so it may not be present on the first runloop
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none';
+                        document.getElementById('docsContent').style.width = document.getElementById('docsContent').clientWidth + 200 + "px";
+                    }
+                } else {
+                    requestAnimationFrame(function() {
+                        hideNav(toc)
+                    })
+                }
+            } else { //right toc is not exist
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none';
+                        document.getElementById('docsContent').style.width = '100%';
+                    } else {
+                        if ($('#docsToc').css('position') !== 'fixed') {
+                            document.getElementById('docsContent').style.width = document.getElementById('docsContent').clientWidth +180+ "px";
+                        } else {
+                            document.getElementById('docsContent').style.width = '100%';
+                        }
+                    }
+                } else {
+                    requestAnimationFrame(function() {
+                        hideNav(toc)
+                    })
+                }
+            }
+        }
+
+        $.getJSON("{{site.github_commits}}{{page.path}}", function(json) {
+            $.each(json, function(i, n) {
+                if (i == 0) {
+                    $('.history').append('<span datetime="' + n.commit.author.date + '">' + new Date(n.commit.author.date).toLocaleString() + '</span>');
+                }
+                if (i > 4) {
+                    return false;
+                }
+                $('.history').append('<a href="' + n.author.html_url + '"><img alt="' + n.author.name + '" src="https://avatars2.githubusercontent.com/u/' + n.author.id + '?v=3&amp;s=40" ></a>');
+            });
+        });
+    })();
+    </script>
+</body>
+
+</html>

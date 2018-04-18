@@ -1,0 +1,9 @@
+{% capture samplecode %}
+{% include_relative {{include.file}} %}
+{% endcapture %} 
+
+{% capture mysample %} 
+{{ samplecode | raw | strip }} 
+{% endcapture %}
+
+{{ mysample | markdownify }}
