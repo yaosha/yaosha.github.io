@@ -274,6 +274,167 @@ export default React.createClass({
 })
 ```
 
+## 服务端渲染
+
+使用`renderToString`实现React服务端渲染。renderToString返回HTML代码。
+
+```js
+render(<App/>, domNode)
+// can be rendered on the server as
+const markup = renderToString(<App/>)
+```
+- 使用webpack构建服务端
+
+```js
+var fs = require('fs')
+var path = require('path')
+
+module.exports = {
+
+  entry: path.resolve(__dirname, 'server.js'),
+
+  output: {
+    filename: 'server.bundle.js'
+  },
+
+  target: 'node',
+
+  // keep node_module paths out of the bundle
+  externals: fs.readdirSync(path.resolve(__dirname, 'node_modules')).concat([
+    'react-dom/server', 'react/addons',
+  ]).reduce(function (ext, mod) {
+    ext[mod] = 'commonjs ' + mod
+    return ext
+  }, {}),
+
+  node: {
+    __filename: true,
+    __dirname: true
+  },
+
+  module: {
+    loaders: [
+      { test: /\.js$/, exclude: /node_modules/, loader: 'babel-loader?presets[]=es2015&presets[]=react' }
+    ]
+  }
+
+}
+```
+
+- `package.json`命令
+
+执行`NODE_ENV=production npm start`将客户端和服务端一起构建。
+
+```
+"scripts": {
+  "start": "if-env NODE_ENV=production && npm run start:prod || npm run start:dev",
+  "start:dev": "webpack-dev-server --inline --content-base public/ --history-api-fallback",
+  "start:prod": "npm run build && node server.bundle.js",
+  "build:client": "webpack",
+  "build:server": "webpack --config webpack.server.config.js",
+  "build": "npm run build:client && npm run build:server"
+},
+```
+
+- 生成路由
+
+```js
+// modules/routes.js
+import React from 'react'
+import { Route, IndexRoute } from 'react-router'
+import App from './App'
+import About from './About'
+import Repos from './Repos'
+import Repo from './Repo'
+import Home from './Home'
+
+module.exports = (
+  <Route path="/" component={App}>
+    <IndexRoute component={Home}/>
+    <Route path="/repos" component={Repos}>
+      <Route path="/repos/:userName/:repoName" component={Repo}/>
+    </Route>
+    <Route path="/about" component={About}/>
+  </Route>
+)
+```
+
+客户端：
+
+```js
+// index.js
+import React from 'react'
+import { render } from 'react-dom'
+import { Router, browserHistory } from 'react-router'
+// import routes and pass them into <Router/>
+import routes from './modules/routes'
+
+render(
+  <Router routes={routes} history={browserHistory}/>,
+  document.getElementById('app')
+)
+```
+
+服务端：导入match和RouterContext，根据URL匹配路由，然后渲染。
+
+```js
+// ...
+// import some new stuff
+import React from 'react'
+// we'll use this to render our app to an html string
+import { renderToString } from 'react-dom/server'
+// and these to match the url to routes and then render
+import { match, RouterContext } from 'react-router'
+import routes from './modules/routes'
+
+// ...
+
+// send all requests to index.html so browserHistory works
+
+app.get('*', (req, res) => {
+  match({ routes: routes, location: req.url }, (err, redirect, props) => {
+    // in here we can make some decisions all at once
+    if (err) {
+      // there was an error somewhere during route matching
+      res.status(500).send(err.message)
+    } else if (redirect) {
+      // we haven't talked about `onEnter` hooks on routes, but before a
+      // route is entered, it can redirect. Here we handle on the server.
+      res.redirect(redirect.pathname + redirect.search)
+    } else if (props) {
+      // if we got props then we matched a route and can render
+      const appHtml = renderToString(<RouterContext {...props}/>)
+      res.send(renderPage(appHtml))
+    } else {
+      // no errors, no redirect, we just didn't match anything
+      res.status(404).send('Not Found')
+    }
+  })
+})
+
+function renderPage(appHtml) {
+  return `
+    <!doctype html public="storage">
+    <html>
+    <meta charset=utf-8/>
+    <title>My First React Router App</title>
+    <link rel=stylesheet href=/index.css>
+    <div id=app>${appHtml}</div>
+    <script src="/bundle.js"></script>
+   `
+}
+
+var PORT = process.env.PORT || 8080
+app.listen(PORT, function() {
+  console.log('Production Express server running at localhost:' + PORT)
+})
+```
+
+
+
+
+
+
 {% endcapture %}
 
 {% include templates/home.md %}
