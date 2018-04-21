@@ -63,6 +63,16 @@ render((
 
 哈希路由，URL示例：http://localhost:8080/#/home
 
+```js
+import { Router, Route, hashHistory, IndexRoute } from 'react-router'
+
+render((
+  <Router history={hashHistory}>
+    {/* ... */}
+  </Router>
+), document.getElementById('app'))
+```
+
 ### browserHistory
 
 和hashHistory不一样，URL示例：http://localhost:8080/home
