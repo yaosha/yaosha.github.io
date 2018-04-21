@@ -1,5 +1,6 @@
 ---
 title: Home Page
-layout: default
+redirect_to: "/docs/home/"
+layout: redirect_to
 ---
 

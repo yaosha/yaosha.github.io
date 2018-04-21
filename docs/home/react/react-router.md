@@ -103,8 +103,10 @@ activeClassName：设置激活样式类名
 
 ```js
 // modules/App.js
+{% raw %}
 <li><Link to="/about" activeStyle={{ color: 'red' }}>About</Link></li>
 <li><Link to="/repos" activeStyle={{ color: 'red' }}>Repos</Link></li>
+{% endraw %}
 ```
 
 ```js
