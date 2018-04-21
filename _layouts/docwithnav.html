@@ -94,7 +94,7 @@
                 if (i > 4) {
                     return false;
                 }
-                $('.history').append('<a href="' + n.author.html_url + '"><img alt="' + n.author.name + '" src="https://avatars2.githubusercontent.com/u/' + n.author.id + '?v=3&amp;s=40" ></a>');
+                n.author && $('.history').append('<a href="' + n.author.html_url + '"><img alt="' + n.author.name + '" src="https://avatars2.githubusercontent.com/u/' + n.author.id + '?v=3&amp;s=40" ></a>');
             });
         });
     })();
