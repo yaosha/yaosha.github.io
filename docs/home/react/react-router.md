@@ -61,7 +61,30 @@ render((
 
 ### hashHistory
 
+哈希路由，类似http://localhost:8080/#/home
+
 ### browserHistory
+
+和hashHistory不一样，路径类似http://localhost:8080/home
+
+```js
+// index.js
+// ...
+// bring in `browserHistory` instead of `hashHistory`
+import { Router, Route, browserHistory, IndexRoute } from 'react-router'
+
+render((
+  <Router history={browserHistory}>
+    {/* ... */}
+  </Router>
+), document.getElementById('app'))
+```
+
+服务端需要处理浏览器输入的URL，如果使用webpack-dev-server，需要设置`--history-api-fallback`
+
+```json
+    "start": "webpack-dev-server --inline --content-base . --history-api-fallback"
+```
 
 ## Link
 
@@ -166,6 +189,86 @@ export default React.createClass({
       </div>
     )
   }
+})
+```
+
+## IndexRoute
+
+设置默认路由，不需要设置path
+
+```js
+// index.js
+// new imports:
+// add `IndexRoute` to 'react-router' imports
+import { Router, Route, hashHistory, IndexRoute } from 'react-router'
+// and the Home component
+import Home from './modules/Home'
+
+// ...
+
+render((
+  <Router history={hashHistory}>
+    <Route path="/" component={App}>
+
+      {/* add it here, as a child of `/` */}
+      <IndexRoute component={Home}/>
+
+      <Route path="/repos" component={Repos}>
+        <Route path="/repos/:userName/:repoName" component={Repo}/>
+      </Route>
+      <Route path="/about" component={About}/>
+    </Route>
+  </Router>
+), document.getElementById('app'))
+```
+
+## IndexLink
+
+只有在页面路由符合IndexRoute时，才处于激活状态
+
+```js
+// App.js
+import { IndexLink } from 'react-router'
+
+// ...
+<li><IndexLink to="/" activeClassName="active">Home</IndexLink></li>
+```
+
+## 编码导航
+
+使用browserHistory
+
+```js
+// modules/Repos.js
+import { browserHistory } from 'react-router'
+
+// ...
+  handleSubmit(event) {
+    // ...
+    const path = `/repos/${userName}/${repo}`
+    browserHistory.push(path)
+  },
+// ...
+```
+
+使用context中的router
+
+```js
+export default React.createClass({
+
+  // ask for `router` from context
+  contextTypes: {
+    router: React.PropTypes.object
+  },
+
+  // ...
+
+  handleSubmit(event) {
+    // ...
+    this.context.router.push(path)
+  },
+
+  // ..
 })
 ```
 
