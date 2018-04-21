@@ -61,11 +61,11 @@ render((
 
 ### hashHistory
 
-哈希路由，URL类似http://localhost:8080/#/home
+哈希路由，URL示例：http://localhost:8080/#/home
 
 ### browserHistory
 
-和hashHistory不一样，URL类似http://localhost:8080/home
+和hashHistory不一样，URL示例：http://localhost:8080/home
 
 ```js
 // index.js
