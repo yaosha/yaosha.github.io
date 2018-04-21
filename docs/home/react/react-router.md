@@ -53,7 +53,7 @@ render((
     <Route path="/repos" component={Repos}/>
     <Route path="/about" component={About}/>
   </Router>
-), document.getElementById('app'))
+), document.getElementById('app'));
 ```
 
 
